@@ -21,6 +21,8 @@ const ModalContent = styled.div`
   border-radius: 8px;
   width: 90%;
   max-width: 400px;
+  max-height: 90vh; 
+  overflow-y: auto; 
   box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
   position: relative;
 
@@ -166,7 +168,12 @@ export default function CreatePollModal({ onClose, onSubmit }) {
 
     const handleSubmit = (e) => {
         e.preventDefault();
-        
+
+        if (!title.trim() || !description.trim() || fields.some(field => !field.title.trim())) {
+            setError('Все поля должны быть заполнены.');
+            return;
+        }
+
         const fieldTitles = fields.map(field => field.title.toLowerCase());
         const hasDuplicates = new Set(fieldTitles).size !== fieldTitles.length;
 
@@ -188,7 +195,12 @@ export default function CreatePollModal({ onClose, onSubmit }) {
     };
 
     const addField = () => {
+        if (fields.length >= 15) {
+            setError('Максимальное количество вариантов ответа — 15.');
+            return;
+        }
         setFields([...fields, { title: '' }]);
+        setError('');
     };
 
     const updateField = (index, value) => {
@@ -214,13 +226,11 @@ export default function CreatePollModal({ onClose, onSubmit }) {
                         placeholder="Название опроса"
                         value={title}
                         onChange={(e) => setTitle(e.target.value)}
-                        required
                     />
                     <TextArea
                         placeholder="Описание опроса"
                         value={description}
                         onChange={(e) => setDescription(e.target.value)}
-                        required
                     />
                     {fields.map((field, index) => (
                         <FieldContainer key={index}>
@@ -229,7 +239,6 @@ export default function CreatePollModal({ onClose, onSubmit }) {
                                 placeholder="Вариант ответа"
                                 value={field.title}
                                 onChange={(e) => updateField(index, e.target.value)}
-                                required
                             />
                             <RemoveButton type="button" onClick={() => removeField(index)}>X</RemoveButton>
                         </FieldContainer>

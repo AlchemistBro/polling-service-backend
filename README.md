@@ -1,3 +1,3 @@
 # Спроси!
 
-<img src="./public/ask.svg" width="700">
+<img src="./public/ask.svg" width="400">

@@ -133,7 +133,7 @@ const RemoveButton = styled.button`
   background: #ff4d4d;
   color: white;
   border: none;
-  border-radius: 4px;
+  border-radius: 6px;
   padding: 0.5rem;
   cursor: pointer;
   transition: background-color 0.2s;
@@ -231,15 +231,11 @@ export default function CreatePollModal({ onClose, onSubmit }) {
                                 onChange={(e) => updateField(index, e.target.value)}
                                 required
                             />
-                            <RemoveButton type="button" onClick={() => removeField(index)}>
-                                ×
-                            </RemoveButton>
+                            <RemoveButton type="button" onClick={() => removeField(index)}>X</RemoveButton>
                         </FieldContainer>
                     ))}
                     {error && <ErrorMessage>{error}</ErrorMessage>}
-                    <Button type="button" onClick={addField}>
-                        Добавить вариант
-                    </Button>
+                    <Button type="button" onClick={addField}>Добавить вариант</Button>
                     <Button type="submit">Создать опрос</Button>
                 </Form>
             </ModalContent>

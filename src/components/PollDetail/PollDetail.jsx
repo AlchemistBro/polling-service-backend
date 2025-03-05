@@ -31,19 +31,10 @@ const PollInfo = styled.div`
 `;
 
 const PollTitle = styled.h1`
-  font-size: 2.5rem;
+  font-size: 2rem;
   color: #333;
-  margin: 0 0 1rem 0;
-  font-weight: 600;
-
-  @media (max-width: 768px) {
-    font-size: 2rem; 
-  }
-
-  @media (max-width: 480px) {
-    font-size: 1.75rem; 
-    text-align: center;
-  }
+  margin-bottom: 0.1rem;
+  text-align: left;
 `;
 
 const PollDescription = styled.p`
@@ -62,7 +53,7 @@ const ResultsContainer = styled.div`
   background: #fff;
   border-radius: 12px;
   box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
-  padding: 2rem;
+  padding: 1.5rem; // Уменьшили отступы
   margin-bottom: 2rem;
   position: relative;
 
@@ -74,7 +65,7 @@ const ResultsContainer = styled.div`
 const ResultItem = styled.div`
   display: flex;
   align-items: center;
-  margin-bottom: 1.5rem;
+  margin-bottom: 1rem; // Уменьшили отступ между элементами
 
   @media (max-width: 480px) {
     flex-direction: column;
@@ -84,10 +75,10 @@ const ResultItem = styled.div`
 `;
 
 const ResultTitle = styled.span`
-  font-size: 1.1rem;
+  font-size: 1rem; // Уменьшили размер шрифта
   color: #333;
-  width: 150px;
-  margin-right: 1.5rem;
+  width: 120px; // Уменьшили ширину
+  margin-right: 1rem; // Уменьшили отступ
   font-weight: 500;
 
   @media (max-width: 480px) {
@@ -101,7 +92,7 @@ const ProgressBarContainer = styled.div`
   background-color: #e0e0e0;
   border-radius: 8px;
   overflow: hidden;
-  height: 10px;
+  height: 8px; // Уменьшили высоту прогресс-бара
 
   @media (max-width: 480px) {
     width: 100%;
@@ -117,9 +108,9 @@ const ProgressBarFill = styled.div`
 `;
 
 const PercentageText = styled.span`
-  font-size: 1rem;
+  font-size: 0.9rem; // Уменьшили размер шрифта
   color: #666;
-  margin-left: 1.5rem;
+  margin-left: 1rem; // Уменьшили отступ
   font-weight: 500;
 
   @media (max-width: 480px) {
@@ -134,10 +125,10 @@ const VoteButton = styled.button`
   color: white;
   border: none;
   border-radius: 8px;
-  padding: 0.4rem 1rem;
+  padding: 0.3rem 0.8rem; // Уменьшили отступы
   cursor: pointer;
-  margin-left: 1.5rem;
-  font-size: 1rem;
+  margin-left: 1rem; // Уменьшили отступ
+  font-size: 0.9rem; // Уменьшили размер шрифта
   font-weight: 500;
   transition: background-color 0.2s, transform 0.2s;
 
@@ -154,7 +145,7 @@ const VoteButton = styled.button`
   @media (max-width: 480px) {
     margin-left: 0; 
     width: 100%;
-    padding: 0.5rem;
+    padding: 0.4rem;
   }
 `;
 
@@ -163,9 +154,9 @@ const CancelButton = styled.button`
   color: white;
   border: none;
   border-radius: 8px;
-  padding: 0.75rem 1.5rem;
+  padding: 0.5rem 1rem; // Уменьшили отступы
   cursor: pointer;
-  font-size: 1rem;
+  font-size: 0.9rem; // Уменьшили размер шрифта
   font-weight: 500;
   transition: background-color 0.2s, transform 0.2s;
   visibility: ${(props) => (props.isVisible ? 'visible' : 'hidden')};
@@ -188,14 +179,14 @@ const CancelButton = styled.button`
 
 const WarningMessage = styled.p`
   color: #ff4d4d;
-  font-size: 1rem;
+  font-size: 0.9rem; // Уменьшили размер шрифта
   margin-top: 0.1rem;
-  margin-bottom: 2rem;
+  margin-bottom: 1.5rem; // Уменьшили отступ
   font-weight: 500;
   position: absolute; 
   bottom: 0; 
-  left: 2rem;
-  right: 2rem;
+  left: 1.5rem; // Уменьшили отступ
+  right: 1.5rem; // Уменьшили отступ
   background: white; 
   padding: 0.5rem;
   border-radius: 4px; 

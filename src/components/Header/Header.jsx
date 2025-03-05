@@ -40,6 +40,7 @@ const NavLink = styled(Link)`
   text-decoration: none;
   color: #333;
   font-weight: bold;
+  font-size: 1rem;
   padding: 0.5rem 1rem;
   border-radius: 4px;
   transition: background-color 0.2s;

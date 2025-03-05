@@ -4,6 +4,13 @@ import styled from 'styled-components';
 import CreatePollModal from '../CreatePollModal/CreatePollModal';
 import { Link } from 'react-router-dom';
 
+const Title = styled.h1`
+  font-size: 2rem;
+  color: #333;
+  margin-bottom: 0.1rem;
+  text-align: left;
+`;
+
 const PollsContainer = styled.section`
   padding: 2rem;
   max-width: 800px;
@@ -12,6 +19,7 @@ const PollsContainer = styled.section`
 
 const PollsList = styled.ul`
   list-style: none;
+  margin-top: 1rem;
   padding: 0;
 `;
 
@@ -58,7 +66,7 @@ const DeleteButton = styled.button`
   background: #ff4d4d;
   color: white;
   border: none;
-  border-radius: 4px;
+  border-radius: 6px;
   padding: 0.5rem 1rem;
   cursor: pointer;
   opacity: 0;
@@ -87,13 +95,6 @@ const AddButton = styled(Link)`
   &:hover {
     background-color:rgb(2, 104, 172);
   }
-`;
-
-const Title = styled.h1`
-  font-size: 2rem;
-  color: #333;
-  margin-bottom: 0.1rem;
-  text-align: left;
 `;
 
 export default function MyPolls() {
@@ -173,7 +174,7 @@ export default function MyPolls() {
                 <PollsList>
                     {polls.map((poll) => (
                         <PollItem key={poll.id}>
-                            <DeleteButton onClick={() => deletePoll(poll.title)}>Удалить опрос</DeleteButton>
+                            <DeleteButton onClick={() => deletePoll(poll.title)}>X</DeleteButton>
                             <PollTitle>{poll.title}</PollTitle>
                             <PollLink to={`/poll/${poll.id}`}>Перейти к опросу</PollLink>
                         </PollItem>

@@ -7,13 +7,14 @@
 }
 
 html {
-  font-size: 120%;
+  font-size: 110%;
 }
 
 body {
-  zoom: 1.2;
+  zoom: 1.1;
   font-family: 'Roboto', sans-serif;
 }
+
 
 main {
   max-width: 850px;

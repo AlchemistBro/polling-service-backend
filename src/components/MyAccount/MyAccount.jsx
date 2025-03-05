@@ -12,7 +12,7 @@ const AccountContainer = styled.section`
 const Title = styled.h1`
   font-size: 2rem;
   color: #333;
-  margin-bottom: 1.5rem;
+  margin-bottom: 1rem;
   text-align: left;
 `;
 
@@ -38,7 +38,7 @@ const PollItem = styled.li`
 const PollTitle = styled.h2`
   font-size: 1.5rem;
   color: #333;
-  margin: 0 0 1rem 0;
+  margin: 0 0 -0.5rem 0;
 `;
 
 const PollOption = styled.p`

@@ -48,6 +48,13 @@ const PollLink = styled(Link)`
   }
 `;
 
+const Title = styled.h1`
+  font-size: 2rem;
+  color: #333;
+  margin-bottom: 0.1rem;
+  text-align: left;
+`;
+
 export default function PollsListSection() {
     const [polls, setPolls] = useState([]);
     const [loading, setLoading] = useState(false);
@@ -65,7 +72,7 @@ export default function PollsListSection() {
 
     return (
         <PollsContainer>
-            <h1 style={{ textAlign: 'left' }}>Список опросов</h1>
+            <Title>Список опросов</Title>
             <br />
             {loading && <p style={{ margin: '1rem' }}>Загрузка списка запросов...</p>}
             {!loading && (

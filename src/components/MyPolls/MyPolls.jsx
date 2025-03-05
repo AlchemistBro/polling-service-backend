@@ -90,6 +90,13 @@ const AddButton = styled.button`
   }
 `;
 
+const Title = styled.h1`
+  font-size: 2rem;
+  color: #333;
+  margin-bottom: 0.1rem;
+  text-align: left;
+`;
+
 export default function MyPolls() {
     const { user } = useContext(AuthContext);
     const [polls, setPolls] = useState([]);
@@ -107,7 +114,7 @@ export default function MyPolls() {
         setLoading(true);
         setError('');
         try {
-            const response = await fetch(`${import.meta.env.VITE_SERVER_PROTOCOL}://${import.meta.env.VITE_SERVER_IP}:${import.meta.env.VITE_SERVER_PORT}/polling_api/get_poll_by_author/${user.username}/`);
+            const response = await fetch(`${import.meta.env.VITE_SERVER_PROTOCOL}://${import.meta.env.VITE_SERVER_IP}:${import.meta.env.VITE_SERVER_PORT}/polling_api/get_polls_by_author/${user.username}/`);
             if (!response.ok) throw new Error('Ошибка при загрузке опросов');
             const data = await response.json();
             setPolls(Array.isArray(data) ? data : []);
@@ -153,7 +160,8 @@ export default function MyPolls() {
 
     return (
         <PollsContainer>
-            <h1 style={{ textAlign: 'left' }}>Мои опросы</h1>
+            
+            <Title>Мои опросы</Title>
             <br />
             <AddButton onClick={() => setIsModalOpen(true)}>+ Добавить опрос</AddButton>
             {isModalOpen && (

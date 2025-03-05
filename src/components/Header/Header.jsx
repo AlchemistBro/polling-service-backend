@@ -12,12 +12,28 @@ const HeaderContainer = styled.header`
   border-bottom: 1px solid #ccc;
   background: #fafafa;
   box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+
+  @media (max-width: 768px) {
+    padding: 0 1rem; 
+  }
+
+  @media (max-width: 480px) {
+    height: auto; 
+    flex-direction: column; 
+    padding: 1rem; 
+  }
 `;
 
 const Nav = styled.nav`
   display: flex;
   align-items: center;
   gap: 1rem;
+
+  @media (max-width: 480px) {
+    flex-direction: column; 
+    gap: 0.5rem;
+    width: 100%; 
+  }
 `;
 
 const NavLink = styled(Link)`
@@ -32,19 +48,11 @@ const NavLink = styled(Link)`
     background-color: #3498db;
     color: white;
   }
-`;
 
-const Button = styled.button`
-  padding: 0.5rem 1rem;
-  background-color: #3498db;
-  color: white;
-  border: none;
-  border-radius: 4px;
-  font-size: 1rem;
-  cursor: pointer;
-
-  &:hover {
-    background-color: #2980b9;
+  @media (max-width: 480px) {
+    width: 100%; 
+    text-align: center; 
+    padding: 0.5rem;
   }
 `;
 
@@ -66,7 +74,7 @@ export default function Header() {
             </Nav>
             <Nav>
                 {user ? (
-                    <Button onClick={handleLogout}>Выйти</Button>
+                    <NavLink onClick={handleLogout}>Выйти</NavLink>
                 ) : (
                     <>
                         <NavLink to="/login">Войти</NavLink>

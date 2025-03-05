@@ -8,6 +8,14 @@ const DetailContainer = styled.div`
   padding: 2rem;
   max-width: 1200px;
   margin: 0 auto;
+
+  @media (max-width: 768px) {
+    padding: 1.5rem; 
+  }
+
+  @media (max-width: 480px) {
+    padding: 1rem;
+  }
 `;
 
 const PollInfo = styled.div`
@@ -16,6 +24,10 @@ const PollInfo = styled.div`
   box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
   padding: 2rem;
   margin-bottom: 2rem;
+
+  @media (max-width: 480px) {
+    padding: 1rem;
+  }
 `;
 
 const PollTitle = styled.h1`
@@ -23,6 +35,15 @@ const PollTitle = styled.h1`
   color: #333;
   margin: 0 0 1rem 0;
   font-weight: 600;
+
+  @media (max-width: 768px) {
+    font-size: 2rem; 
+  }
+
+  @media (max-width: 480px) {
+    font-size: 1.75rem; 
+    text-align: center;
+  }
 `;
 
 const PollDescription = styled.p`
@@ -30,6 +51,11 @@ const PollDescription = styled.p`
   color: #666;
   margin: 0 0 1.5rem 0;
   line-height: 1.6;
+
+  @media (max-width: 480px) {
+    font-size: 1rem;
+    text-align: center;
+  }
 `;
 
 const ResultsContainer = styled.div`
@@ -39,12 +65,22 @@ const ResultsContainer = styled.div`
   padding: 2rem;
   margin-bottom: 2rem;
   position: relative;
+
+  @media (max-width: 480px) {
+    padding: 1rem;
+  }
 `;
 
 const ResultItem = styled.div`
   display: flex;
   align-items: center;
   margin-bottom: 1.5rem;
+
+  @media (max-width: 480px) {
+    flex-direction: column;
+    align-items: flex-start; 
+    gap: 0.5rem; 
+  }
 `;
 
 const ResultTitle = styled.span`
@@ -53,6 +89,11 @@ const ResultTitle = styled.span`
   width: 150px;
   margin-right: 1.5rem;
   font-weight: 500;
+
+  @media (max-width: 480px) {
+    width: 100%;
+    margin-right: 0;
+  }
 `;
 
 const ProgressBarContainer = styled.div`
@@ -61,6 +102,10 @@ const ProgressBarContainer = styled.div`
   border-radius: 8px;
   overflow: hidden;
   height: 10px;
+
+  @media (max-width: 480px) {
+    width: 100%;
+  }
 `;
 
 const ProgressBarFill = styled.div`
@@ -76,6 +121,12 @@ const PercentageText = styled.span`
   color: #666;
   margin-left: 1.5rem;
   font-weight: 500;
+
+  @media (max-width: 480px) {
+    margin-left: 0;
+    width: 100%; 
+    text-align: right;
+  }
 `;
 
 const VoteButton = styled.button`
@@ -98,6 +149,12 @@ const VoteButton = styled.button`
   &:active {
     background: #1c6ea4;
     transform: translateY(0);
+  }
+
+  @media (max-width: 480px) {
+    margin-left: 0; 
+    width: 100%;
+    padding: 0.5rem;
   }
 `;
 
@@ -122,6 +179,11 @@ const CancelButton = styled.button`
     background: #b30000;
     transform: translateY(0);
   }
+
+  @media (max-width: 480px) {
+    width: 100%; 
+    margin-top: 1rem; 
+  }
 `;
 
 const WarningMessage = styled.p`
@@ -137,12 +199,22 @@ const WarningMessage = styled.p`
   background: white; 
   padding: 0.5rem;
   border-radius: 4px; 
+
+  @media (max-width: 480px) {
+    position: static;
+    margin-top: 1rem; 
+  }
 `;
 
 const ChartContainer = styled.div`
   display: flex;
   gap: 2rem;
   margin-top: 2rem;
+
+  @media (max-width: 768px) {
+    flex-direction: column; 
+    gap: 1rem;
+  }
 `;
 
 const ChartWrapper = styled.div`
@@ -151,6 +223,10 @@ const ChartWrapper = styled.div`
   box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
   padding: 1.5rem;
   flex: 1;
+
+  @media (max-width: 480px) {
+    padding: 1rem;
+  }
 `;
 
 const ChartTitle = styled.h3`
@@ -158,6 +234,11 @@ const ChartTitle = styled.h3`
   color: #333;
   margin-bottom: 1.5rem;
   font-weight: 600;
+
+  @media (max-width: 480px) {
+    font-size: 1.25rem; 
+    text-align: center; 
+  }
 `;
 
 export default function PollDetail() {

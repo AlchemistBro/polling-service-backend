@@ -17,11 +17,17 @@ const ModalOverlay = styled.div`
 
 const ModalContent = styled.div`
   background: #fff;
-  padding: 2rem;
+  padding: 1.5rem;
   border-radius: 8px;
-  width: 400px;
+  width: 90%;
+  max-width: 400px;
   box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
   position: relative;
+
+  @media (max-width: 480px) {
+    padding: 1rem;
+    width: 95%;
+  }
 `;
 
 const CloseButton = styled.button`
@@ -50,6 +56,10 @@ const Form = styled.form`
   display: flex;
   flex-direction: column;
   gap: 1rem;
+
+  @media (max-width: 480px) {
+    gap: 0.75rem;
+  }
 `;
 
 const Input = styled.input`
@@ -62,6 +72,11 @@ const Input = styled.input`
   &:focus {
     border-color: #3498db;
     outline: none;
+  }
+
+  @media (max-width: 480px) {
+    padding: 0.5rem;
+    font-size: 0.875rem;
   }
 `;
 
@@ -76,6 +91,11 @@ const TextArea = styled.textarea`
   &:focus {
     border-color: #3498db;
     outline: none;
+  }
+
+  @media (max-width: 480px) {
+    padding: 0.5rem;
+    font-size: 0.875rem;
   }
 `;
 
@@ -92,12 +112,21 @@ const Button = styled.button`
   &:hover {
     background-color: #2980b9;
   }
+
+  @media (max-width: 480px) {
+    padding: 0.5rem;
+    font-size: 0.875rem;
+  }
 `;
 
 const FieldContainer = styled.div`
   display: flex;
   gap: 0.5rem;
   align-items: center;
+
+  @media (max-width: 480px) {
+    gap: 0.25rem;
+  }
 `;
 
 const RemoveButton = styled.button`
@@ -112,12 +141,20 @@ const RemoveButton = styled.button`
   &:hover {
     background: #cc0000;
   }
+
+  @media (max-width: 480px) {
+    padding: 0.25rem;
+  }
 `;
 
 const ErrorMessage = styled.div`
   color: #ff4d4d;
   font-size: 0.875rem;
   margin-top: -0.5rem;
+
+  @media (max-width: 480px) {
+    font-size: 0.75rem;
+  }
 `;
 
 export default function CreatePollModal({ onClose, onSubmit }) {
@@ -129,8 +166,7 @@ export default function CreatePollModal({ onClose, onSubmit }) {
 
     const handleSubmit = (e) => {
         e.preventDefault();
-
-        // Проверка на дубликаты
+        
         const fieldTitles = fields.map(field => field.title.toLowerCase());
         const hasDuplicates = new Set(fieldTitles).size !== fieldTitles.length;
 
@@ -139,7 +175,6 @@ export default function CreatePollModal({ onClose, onSubmit }) {
             return;
         }
 
-        // Если дубликатов нет, сбрасываем ошибку и отправляем форму
         setError('');
         const poll = {
             id: Date.now(),

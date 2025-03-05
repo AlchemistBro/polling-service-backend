@@ -74,19 +74,18 @@ const DeleteButton = styled.button`
   }
 `;
 
-const AddButton = styled.button`
-  background: #3498db;
+const AddButton = styled(Link)`
+  display: inline-block;
+  background-color: #3498db;
   color: white;
-  border: none;
-  border-radius: 4px;
   padding: 0.5rem 1rem;
-  cursor: pointer;
-  margin-bottom: 1rem;
+  border-radius: 4px;
+  text-decoration: none;
   font-weight: bold;
   transition: background-color 0.2s;
 
   &:hover {
-    background-color: rgb(2, 104, 172);
+    background-color:rgb(2, 104, 172);
   }
 `;
 

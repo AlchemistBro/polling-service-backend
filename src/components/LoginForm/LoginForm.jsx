@@ -11,12 +11,28 @@ const FormContainer = styled.div`
   background: #fff;
   border-radius: 8px;
   box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+
+  @media (max-width: 768px) {
+    margin: 1rem auto; 
+    padding: 0.75rem;
+  }
+
+  @media (max-width: 480px) {
+    margin: 0.5rem auto;
+    padding: 0.5rem;
+    border-radius: 0; 
+    box-shadow: none; 
+  }
 `;
 
 const Form = styled.form`
   display: flex;
   flex-direction: column;
   gap: 1rem;
+
+  @media (max-width: 480px) {
+    gap: 0.75rem; 
+  }
 `;
 
 const Input = styled.input`
@@ -24,6 +40,11 @@ const Input = styled.input`
   border: 1px solid #ccc;
   border-radius: 4px;
   font-size: 1rem;
+
+  @media (max-width: 480px) {
+    padding: 0.4rem; 
+    font-size: 0.9rem; 
+  }
 `;
 
 const Button = styled.button`
@@ -38,11 +59,20 @@ const Button = styled.button`
   &:hover {
     background-color: #2980b9;
   }
+
+  @media (max-width: 480px) {
+    padding: 0.4rem;
+    font-size: 0.9rem; 
+  }
 `;
 
 const ErrorMessage = styled.p`
   color: red;
   font-size: 0.9rem;
+
+  @media (max-width: 480px) {
+    font-size: 0.8rem; 
+  }
 `;
 
 export default function LoginForm() {

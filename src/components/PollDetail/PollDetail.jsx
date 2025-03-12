@@ -1,20 +1,27 @@
-import React, { useEffect, useState, useContext } from 'react';
+import React, { useEffect, useState, useContext, useRef } from 'react';
 import { useParams } from 'react-router-dom';
 import styled from 'styled-components';
 import { BarChart, Bar, XAxis, YAxis, Tooltip, Legend, ResponsiveContainer, PieChart, Pie, Cell } from 'recharts';
 import { AuthContext } from '../../context/AuthContext/AuthContext';
+import { ErrorMessage } from '../../styles/CommonStyles';
 
 const DetailContainer = styled.div`
   padding: 2rem;
   max-width: 1200px;
   margin: 0 auto;
+  animation: fadeIn 0.3s ease-out;
 
   @media (max-width: 768px) {
-    padding: 1.5rem; 
+    padding: 1.5rem;
   }
 
   @media (max-width: 480px) {
     padding: 1rem;
+  }
+
+  @keyframes fadeIn {
+    from { opacity: 0; transform: translateY(20px); }
+    to { opacity: 1; transform: translateY(0); }
   }
 `;
 
@@ -31,21 +38,28 @@ const PollInfo = styled.div`
 `;
 
 const PollTitle = styled.h1`
-  font-size: 2rem;
+  font-size: 1.5rem;
   color: #333;
-  margin-bottom: 0.1rem;
+  margin-bottom: 0.5rem;
   text-align: left;
+
+  @media (max-width: 480px) {
+    text-align: center;
+  }
 `;
 
 const PollDescription = styled.p`
-  font-size: 1.1rem;
+  font-size: 1rem;
   color: #666;
-  margin: 0 0 1.5rem 0;
-  line-height: 1.6;
+  line-height: 1.5;
+
+  strong {
+    color: #3498db;
+    font-weight: 600;
+  }
 
   @media (max-width: 480px) {
-    font-size: 1rem;
-    text-align: center;
+    font-size: 0.9rem;
   }
 `;
 
@@ -53,9 +67,8 @@ const ResultsContainer = styled.div`
   background: #fff;
   border-radius: 12px;
   box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
-  padding: 1.5rem; // Уменьшили отступы
+  padding: 1.5rem;
   margin-bottom: 2rem;
-  position: relative;
 
   @media (max-width: 480px) {
     padding: 1rem;
@@ -65,25 +78,24 @@ const ResultsContainer = styled.div`
 const ResultItem = styled.div`
   display: flex;
   align-items: center;
-  margin-bottom: 1rem; // Уменьшили отступ между элементами
+  margin-bottom: 1rem;
+  gap: 1rem;
 
   @media (max-width: 480px) {
     flex-direction: column;
-    align-items: flex-start; 
-    gap: 0.5rem; 
+    align-items: flex-start;
+    gap: 0.5rem;
   }
 `;
 
 const ResultTitle = styled.span`
-  font-size: 1rem; // Уменьшили размер шрифта
+  font-size: 1rem;
   color: #333;
-  width: 120px; // Уменьшили ширину
-  margin-right: 1rem; // Уменьшили отступ
   font-weight: 500;
+  min-width: 120px;
 
   @media (max-width: 480px) {
     width: 100%;
-    margin-right: 0;
   }
 `;
 
@@ -92,10 +104,13 @@ const ProgressBarContainer = styled.div`
   background-color: #e0e0e0;
   border-radius: 8px;
   overflow: hidden;
-  height: 8px; // Уменьшили высоту прогресс-бара
+  height: 8px;
+  min-width: ${(props) => props.minWidth || '100px'};
 
   @media (max-width: 480px) {
+    height: 12px;
     width: 100%;
+    min-width: ${(props) => props.minWidth || '100px'};
   }
 `;
 
@@ -105,18 +120,22 @@ const ProgressBarFill = styled.div`
   width: ${(props) => props.percentage}%;
   border-radius: 8px;
   transition: width 0.3s ease;
+
+  @media (max-width: 480px) {
+    height: 12px;
+  }
 `;
 
 const PercentageText = styled.span`
-  font-size: 0.9rem; // Уменьшили размер шрифта
+  font-size: 0.9rem;
   color: #666;
-  margin-left: 1rem; // Уменьшили отступ
   font-weight: 500;
+  min-width: 60px;
+  text-align: right;
 
   @media (max-width: 480px) {
-    margin-left: 0;
-    width: 100%; 
-    text-align: right;
+    width: 100%;
+    text-align: left;
   }
 `;
 
@@ -125,10 +144,9 @@ const VoteButton = styled.button`
   color: white;
   border: none;
   border-radius: 8px;
-  padding: 0.3rem 0.8rem; // Уменьшили отступы
+  padding: 0.5rem 1rem;
   cursor: pointer;
-  margin-left: 1rem; // Уменьшили отступ
-  font-size: 0.9rem; // Уменьшили размер шрифта
+  font-size: 0.9rem;
   font-weight: 500;
   transition: background-color 0.2s, transform 0.2s;
 
@@ -143,10 +161,16 @@ const VoteButton = styled.button`
   }
 
   @media (max-width: 480px) {
-    margin-left: 0; 
     width: 100%;
-    padding: 0.4rem;
+    margin-top: 0.5rem;
   }
+`;
+
+const CancelButtonWrapper = styled.div`
+  height: ${(props) => (props.isVisible ? 'auto' : '0')};
+  visibility: ${(props) => (props.isVisible ? 'visible' : 'hidden')};
+  opacity: ${(props) => (props.isVisible ? 1 : 0)};
+  transition: opacity 0.3s ease;
 `;
 
 const CancelButton = styled.button`
@@ -154,12 +178,11 @@ const CancelButton = styled.button`
   color: white;
   border: none;
   border-radius: 8px;
-  padding: 0.5rem 1rem; // Уменьшили отступы
+  padding: 0.5rem 1rem;
   cursor: pointer;
-  font-size: 0.9rem; // Уменьшили размер шрифта
+  font-size: 0.9rem;
   font-weight: 500;
   transition: background-color 0.2s, transform 0.2s;
-  visibility: ${(props) => (props.isVisible ? 'visible' : 'hidden')};
 
   &:hover {
     background: #cc0000;
@@ -172,29 +195,16 @@ const CancelButton = styled.button`
   }
 
   @media (max-width: 480px) {
-    width: 100%; 
-    margin-top: 1rem; 
+    margin-top: 1rem;
   }
 `;
 
 const WarningMessage = styled.p`
   color: #ff4d4d;
-  font-size: 0.9rem; // Уменьшили размер шрифта
-  margin-top: 0.1rem;
-  margin-bottom: 1.5rem; // Уменьшили отступ
+  font-size: 0.9rem;
+  margin-top: 0.5rem;
+  margin-bottom: 1.5rem;
   font-weight: 500;
-  position: absolute; 
-  bottom: 0; 
-  left: 1.5rem; // Уменьшили отступ
-  right: 1.5rem; // Уменьшили отступ
-  background: white; 
-  padding: 0.5rem;
-  border-radius: 4px; 
-
-  @media (max-width: 480px) {
-    position: static;
-    margin-top: 1rem; 
-  }
 `;
 
 const ChartContainer = styled.div`
@@ -203,7 +213,7 @@ const ChartContainer = styled.div`
   margin-top: 2rem;
 
   @media (max-width: 768px) {
-    flex-direction: column; 
+    flex-direction: column;
     gap: 1rem;
   }
 `;
@@ -227,196 +237,222 @@ const ChartTitle = styled.h3`
   font-weight: 600;
 
   @media (max-width: 480px) {
-    font-size: 1.25rem; 
-    text-align: center; 
+    font-size: 1.25rem;
+    text-align: center;
   }
 `;
 
 export default function PollDetail() {
-    const { pollId } = useParams();
-    const { user } = useContext(AuthContext);
-    const [poll, setPoll] = useState(null);
-    const [loading, setLoading] = useState(true);
-    const [error, setError] = useState('');
-    const [showWarning, setShowWarning] = useState(false);
+  const { pollId } = useParams();
+  const { user } = useContext(AuthContext);
+  const [poll, setPoll] = useState(null);
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState('');
+  const [showWarning, setShowWarning] = useState(false);
+  const [addPollError, setAddPollError] = useState('');
+  const [isErrorVisible, setIsErrorVisible] = useState(false);
 
-    const fetchPoll = async () => {
-        try {
-            const response = await fetch(`${import.meta.env.VITE_SERVER_PROTOCOL}://${import.meta.env.VITE_SERVER_IP}:${import.meta.env.VITE_SERVER_PORT}/polling_api/get_poll_by_id/${pollId}/`);
-            if (!response.ok) throw new Error('Ошибка при загрузке опроса');
-            const data = await response.json();
-            setPoll(data);
-            setLoading(false);
-        } catch (err) {
-            console.error('Ошибка:', err);
-            setError('Не удалось загрузить опрос');
-            setLoading(false);
-        }
-    };
+  useEffect(() => {
+    if (addPollError) {
+      setIsErrorVisible(true);
+      const timer = setTimeout(() => {
+        setIsErrorVisible(false);
+        setTimeout(() => setAddPollError(''), 300);
+      }, 5000);
+      return () => clearTimeout(timer);
+    }
+  }, [addPollError]);
 
-    useEffect(() => {
-        fetchPoll();
-    }, [pollId]);
+  const handleCloseError = () => {
+    setIsErrorVisible(false);
+    setTimeout(() => setAddPollError(''), 300);
+  };
 
-    const vote = async (optionTitle) => {
-        if (!user) {
-            setShowWarning(true);
-            return;
-        }
+  const fetchPoll = async () => {
+    try {
+      const response = await fetch(`${import.meta.env.VITE_SERVER_PROTOCOL}://${import.meta.env.VITE_SERVER_IP}:${import.meta.env.VITE_SERVER_PORT}/polling_api/get_poll_by_id/${pollId}/`);
+      if (!response.ok) throw new Error('Ошибка при загрузке опроса');
+      const data = await response.json();
+      setPoll(data);
+      setLoading(false);
+    } catch (err) {
+      console.error('Ошибка:', err);
+      setError('Не удалось загрузить опрос');
+      setLoading(false);
+    }
+  };
 
-        try {
-            const response = await fetch(`${import.meta.env.VITE_SERVER_PROTOCOL}://${import.meta.env.VITE_SERVER_IP}:${import.meta.env.VITE_SERVER_PORT}/polling_api/vote/`, {
-                method: 'POST',
-                headers: {
-                    'Content-Type': 'application/json',
-                },
-                body: JSON.stringify({
-                    poll_title: poll.title,
-                    username: user.username,
-                    option_title: optionTitle,
-                }),
-            });
+  useEffect(() => {
+    fetchPoll();
+  }, [pollId]);
 
-            if (!response.ok) {
-                const errorData = await response.json();
-                throw new Error(errorData.detail || 'Ошибка при голосовании');
-            }
+  const vote = async (optionTitle) => {
+    if (!user) {
+      setAddPollError("Чтобы проголосовать в опросе нужно войти в аккаунт или зарегистрироваться");
+      return;
+    }
 
-            const updatedPoll = await response.json();
-            setPoll(updatedPoll.poll);
-            setShowWarning(false);
-        } catch (err) {
-            console.error('Ошибка:', err);
-            setError(err.message);
-        }
-    };
+    try {
+      const response = await fetch(`${import.meta.env.VITE_SERVER_PROTOCOL}://${import.meta.env.VITE_SERVER_IP}:${import.meta.env.VITE_SERVER_PORT}/polling_api/vote/`, {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({
+          poll_id: poll.id,
+          username: user.username,
+          option_title: optionTitle,
+        }),
+      });
 
-    const cancelVote = async () => {
-        try {
-            const response = await fetch(`${import.meta.env.VITE_SERVER_PROTOCOL}://${import.meta.env.VITE_SERVER_IP}:${import.meta.env.VITE_SERVER_PORT}/polling_api/cancel_vote/`, {
-                method: 'POST',
-                headers: {
-                    'Content-Type': 'application/json',
-                },
-                body: JSON.stringify({
-                    poll_title: poll.title,
-                    username: user.username,
-                }),
-            });
+      if (!response.ok) {
+        const errorData = await response.json();
+        throw new Error(errorData.detail || 'Ошибка при голосовании');
+      }
 
-            if (!response.ok) {
-                const errorData = await response.json();
-                throw new Error(errorData.detail || 'Ошибка при отмене голоса');
-            }
+      const updatedPoll = await response.json();
+      setPoll(updatedPoll.poll);
+      setShowWarning(false);
+    } catch (err) {
+      console.error('Ошибка:', err);
+      setError(err.message);
+    }
+  };
 
-            await fetchPoll();
-        } catch (err) {
-            console.error('Ошибка:', err);
-            setError(err.message);
-        }
-    };
+  const cancelVote = async () => {
+    try {
+      const response = await fetch(`${import.meta.env.VITE_SERVER_PROTOCOL}://${import.meta.env.VITE_SERVER_IP}:${import.meta.env.VITE_SERVER_PORT}/polling_api/cancel_vote/`, {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({
+          poll_id: poll.id,
+          username: user.username,
+        }),
+      });
 
-    const hasUserVoted = () => {
-        if (!poll || !user) return false;
-        return poll.fields.some((field) => field.votes_list_db.includes(user.username));
-    };
+      if (!response.ok) {
+        const errorData = await response.json();
+        throw new Error(errorData.detail || 'Ошибка при отмене голоса');
+      }
 
-    if (!poll) return <p>Опрос не найден</p>;
+      await fetchPoll();
+    } catch (err) {
+      console.error('Ошибка:', err);
+      setError(err.message);
+    }
+  };
 
-    const totalVotes = poll.fields.reduce((sum, field) => sum + field.votes_list_db.length, 0);
+  const hasUserVoted = () => {
+    if (!poll || !user) return false;
+    return poll.fields.some((field) => field.votes_list_db.includes(user.username));
+  };
 
-    const chartData = poll.fields.map((field) => ({
-        name: field.title,
-        votes: field.votes_list_db.length,
-    }));
+  if (!poll) return <></>;
 
-    const COLORS = [
-        '#3498db', '#2ecc71', '#e74c3c', '#9b59b6', '#f1c40f',
-        '#1abc9c', '#34495e', '#e67e22', '#95a5a6', '#d35400'
-    ];
+  const totalVotes = poll.fields.reduce((sum, field) => sum + field.votes_list_db.length, 0);
 
-    return (
-        <DetailContainer>
-            <PollInfo>
-                <PollTitle>{poll.title}</PollTitle>
-                <PollDescription>
-                    <strong>Автор:</strong> {poll.author}
-                    <br />
-                    <strong>Описание:</strong> {poll.description}
-                </PollDescription>
-            </PollInfo>
+  const chartData = poll.fields.map((field) => ({
+    name: field.title,
+    votes: field.votes_list_db.length,
+  }));
 
-            <ResultsContainer>
-                <h2>Результаты:</h2>
-                <br /> <br />
-                {poll.fields.map((field) => {
-                    const percentage = (field.votes_list_db.length / totalVotes) * 100 || 0;
-                    return (
-                        <ResultItem key={field.title}>
-                            <ResultTitle>{field.title}</ResultTitle>
-                            <ProgressBarContainer>
-                                <ProgressBarFill percentage={percentage} />
-                            </ProgressBarContainer>
-                            <PercentageText>{percentage.toFixed(2)}%</PercentageText>
-                            {!hasUserVoted() && (
-                                <VoteButton onClick={() => vote(field.title)}>Голосовать</VoteButton>
-                            )}
-                        </ResultItem>
-                    );
-                })}
-                {showWarning && (
-                    <WarningMessage>Чтобы проголосовать в опросе нужно войти в аккаунт или зарегистрироваться</WarningMessage>
-                )}
-                <CancelButton 
-                    style={{ visibility: hasUserVoted() ? 'visible' : 'hidden' }} 
-                    onClick={cancelVote}
-                >
-                    Отменить голос
-                </CancelButton>
-            </ResultsContainer>
-            
-            <ChartContainer>
-                <ChartWrapper>
-                    <ChartTitle>График результатов</ChartTitle>
-                    <ResponsiveContainer width="100%" height={300}>
-                        <BarChart data={chartData}>
-                            <XAxis dataKey="name" />
-                            <YAxis />
-                            <Tooltip />
-                            <Legend />
-                            <Bar dataKey="votes">
-                                {chartData.map((entry, index) => (
-                                    <Cell key={`cell-${index}`} fill={COLORS[index % COLORS.length]} />
-                                ))}
-                            </Bar>
-                        </BarChart>
-                    </ResponsiveContainer>
-                </ChartWrapper>
+  const COLORS = [
+    '#3498db', '#2ecc71', '#e74c3c', '#9b59b6', '#f1c40f',
+    '#1abc9c', '#34495e', '#e67e22', '#95a5a6', '#d35400'
+  ];
 
-                <ChartWrapper>
-                    <ChartTitle>Круговая диаграмма результатов</ChartTitle>
-                    <ResponsiveContainer width="100%" height={300}>
-                        <PieChart>
-                            <Pie
-                                data={chartData}
-                                dataKey="votes"
-                                nameKey="name"
-                                cx="50%"
-                                cy="50%"
-                                outerRadius={100}
-                                fill="#8884d8"
-                                label
-                            >
-                                {chartData.map((entry, index) => (
-                                    <Cell key={`cell-${index}`} fill={COLORS[index % COLORS.length]} />
-                                ))}
-                            </Pie>
-                            <Tooltip />
-                            <Legend />
-                        </PieChart>
-                    </ResponsiveContainer>
-                </ChartWrapper>
-            </ChartContainer>
-        </DetailContainer>
-    );
+  return (
+    <DetailContainer>
+      {addPollError && (
+        <ErrorMessage 
+          role="alert"
+          onClick={handleCloseError}
+          title="Закрыть уведомление"
+          $isVisible={isErrorVisible}
+        >
+          ⚠️ {addPollError}
+        </ErrorMessage>
+      )}
+
+      <PollInfo>
+        <PollTitle>{poll.title}</PollTitle>
+        <PollDescription>
+          <strong>Автор:</strong> {poll.author}
+          <br /> <br />
+          <strong>Описание:</strong> {poll.description}
+        </PollDescription>
+      </PollInfo>
+
+      <ResultsContainer>
+        <h2>Результаты:</h2>
+        <br /> <br />
+        {poll.fields.map((field) => {
+          const percentage = (field.votes_list_db.length / totalVotes) * 100 || 0;
+          return (
+            <ResultItem key={field.title}>
+              <ResultTitle>{field.title}</ResultTitle>
+              <ProgressBarContainer>
+                <ProgressBarFill percentage={percentage} />
+              </ProgressBarContainer>
+              <PercentageText>{percentage.toFixed(2)}%</PercentageText>
+              {!hasUserVoted() && (
+                <VoteButton onClick={() => vote(field.title)}>Голосовать</VoteButton>
+              )}
+            </ResultItem>
+          );
+        })}
+        {showWarning && (
+          <WarningMessage></WarningMessage>
+        )}
+        <CancelButtonWrapper isVisible={hasUserVoted()}>
+          <CancelButton onClick={cancelVote}>Отменить голос</CancelButton>
+        </CancelButtonWrapper>
+      </ResultsContainer>
+
+      <ChartContainer>
+        <ChartWrapper>
+          <ChartTitle>График результатов</ChartTitle>
+          <ResponsiveContainer width="100%" height={300}>
+            <BarChart data={chartData}>
+              <XAxis dataKey="name" />
+              <YAxis />
+              <Tooltip />
+              <Legend />
+              <Bar dataKey="votes">
+                {chartData.map((entry, index) => (
+                  <Cell key={`cell-${index}`} fill={COLORS[index % COLORS.length]} />
+                ))}
+              </Bar>
+            </BarChart>
+          </ResponsiveContainer>
+        </ChartWrapper>
+
+        <ChartWrapper>
+          <ChartTitle>Круговая диаграмма результатов</ChartTitle>
+          <ResponsiveContainer width="100%" height={300}>
+            <PieChart>
+              <Pie
+                data={chartData}
+                dataKey="votes"
+                nameKey="name"
+                cx="50%"
+                cy="50%"
+                outerRadius={100}
+                fill="#8884d8"
+                label
+              >
+                {chartData.map((entry, index) => (
+                  <Cell key={`cell-${index}`} fill={COLORS[index % COLORS.length]} />
+                ))}
+              </Pie>
+              <Tooltip />
+              <Legend />
+            </PieChart>
+          </ResponsiveContainer>
+        </ChartWrapper>
+      </ChartContainer>
+    </DetailContainer>
+  );
 }

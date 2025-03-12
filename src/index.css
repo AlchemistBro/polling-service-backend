@@ -1,5 +1,12 @@
 @import url('https://fonts.googleapis.com/css2?family=Inter&family=Roboto:wght@400;700&family=Titillium+Web&display=swap');
 
+:root {
+  --primary-color: #66b1e3;    
+  --secondary-color: #2c3e50;  
+  --accent-color: #2980b9;    
+  --background-light: #faf8f9; 
+}
+
 * {
   margin: 0;
   padding: 0;
@@ -12,15 +19,39 @@ html {
 
 body {
   zoom: 1.1;
-  font-family: 'Roboto', sans-serif;
+  font-family: 'Inter', 'Roboto', sans-serif;
+  background-color: #e6f0f7; /* Светло-синий фон */
+  background-image: 
+    linear-gradient(rgba(52, 152, 219, 0.1) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(52, 152, 219, 0.1) 1px, transparent 1px),
+    linear-gradient(rgba(255, 255, 255, 0.2) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(255, 255, 255, 0.2) 1px, transparent 1px);
+  background-size: 20px 20px, 20px 20px, 40px 40px, 40px 40px;
 }
 
+
+
+@keyframes gradientBG {
+  0% {
+    background-position: 0% 50%;
+  }
+  50% {
+    background-position: 100% 50%;
+  }
+  100% {
+    background-position: 0% 50%;
+  }
+}
 
 main {
   max-width: 850px;
   margin: 0 auto;
   padding: 1rem;
   padding-top: 2rem;
+  background: rgba(255, 255, 255, 0.95);
+  border-radius: 16px;
+  box-shadow: 0 8px 32px rgba(0, 0, 0, 0.1);
+  backdrop-filter: blur(10px);
 }
 
 h3 {
@@ -32,10 +63,17 @@ section ul {
 }
 
 section ul li {
-  border: 1px solid #ccc;
+  
   border-radius: 10px;
   padding: 1rem;
   margin-bottom: 1rem;
+  background: white;
+  transition: transform 0.2s, box-shadow 0.2s;
+}
+
+section ul li:hover {
+  transform: translateY(-3px);
+  box-shadow: 0 4px 15px rgba(52, 152, 219, 0.2);
 }
 
 .content,

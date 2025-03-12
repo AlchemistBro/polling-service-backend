@@ -1,7 +1,8 @@
-import React, { useContext } from 'react';
+import React, { useContext, useState } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import styled from 'styled-components';
 import { AuthContext } from '../../context/AuthContext/AuthContext';
+import { FaBars, FaTimes } from 'react-icons/fa';
 
 const HeaderContainer = styled.header`
   height: 60px;
@@ -12,27 +13,56 @@ const HeaderContainer = styled.header`
   border-bottom: 1px solid #ccc;
   background: #fafafa;
   box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+  position: relative;
 
   @media (max-width: 768px) {
-    padding: 0 1rem; 
+    padding: 0 1rem;
   }
 
   @media (max-width: 480px) {
-    height: auto; 
-    flex-direction: column; 
-    padding: 1rem; 
+    height: 60px;
+    flex-direction: row;
   }
 `;
 
-const Nav = styled.nav`
+const LeftNav = styled.nav`
   display: flex;
   align-items: center;
   gap: 1rem;
 
   @media (max-width: 480px) {
-    flex-direction: column; 
+    display: none; // Скрываем на мобильных устройствах
+  }
+`;
+
+const RightNav = styled.nav`
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+  margin-left: auto; // Сдвигаем вправо
+
+  @media (max-width: 480px) {
+    display: none; // Скрываем на мобильных устройствах
+  }
+`;
+
+const MobileNav = styled.nav`
+  display: none;
+
+  @media (max-width: 480px) {
+    display: flex;
+    flex-direction: column;
     gap: 0.5rem;
-    width: 100%; 
+    width: 100%;
+    position: absolute;
+    top: 60px;
+    left: 0;
+    background: #fafafa;
+    border-bottom: 1px solid #ccc;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+    display: ${({ $isOpen }) => ($isOpen ? 'flex' : 'none')};
+    padding: 1rem 0;
+    z-index: 1000;
   }
 `;
 
@@ -51,29 +81,57 @@ const NavLink = styled(Link)`
   }
 
   @media (max-width: 480px) {
-    width: 100%; 
-    text-align: center; 
+    width: 100%;
+    text-align: center;
     padding: 0.5rem;
+  }
+`;
+
+const BurgerIcon = styled.div`
+  display: none;
+  cursor: pointer;
+  font-size: 1.5rem;
+  color: #333;
+  padding: 0.5rem;
+  border-radius: 50%;
+  transition: background-color 0.2s;
+  position: absolute; // Абсолютное позиционирование
+  top: 5px; 
+  right: 10px;
+
+  @media (max-width: 480px) {
+    display: block;
   }
 `;
 
 export default function Header() {
     const { user, logout } = useContext(AuthContext);
     const navigate = useNavigate();
+    const [isMenuOpen, setIsMenuOpen] = useState(false);
 
-    const handleLogout = () => {
-        logout();
+    const handleLogout = async () => {
+        await logout();
         navigate('/');
+        closeMenu();
+    };
+
+    const toggleMenu = () => {
+        setIsMenuOpen(!isMenuOpen);
+    };
+
+    const closeMenu = () => {
+        setIsMenuOpen(false);
     };
 
     return (
         <HeaderContainer>
-            <Nav>
+            <LeftNav>
                 <NavLink to="/">Главная</NavLink>
                 {user && <NavLink to="/my-account">Мой аккаунт</NavLink>}
                 {user && <NavLink to="/my-polls">Мои опросы</NavLink>}
-            </Nav>
-            <Nav>
+            </LeftNav>
+
+            <RightNav>
                 {user ? (
                     <NavLink onClick={handleLogout}>Выйти</NavLink>
                 ) : (
@@ -82,7 +140,25 @@ export default function Header() {
                         <NavLink to="/register">Регистрация</NavLink>
                     </>
                 )}
-            </Nav>
+            </RightNav>
+
+            <BurgerIcon onClick={toggleMenu}>
+                {isMenuOpen ? <FaTimes /> : <FaBars />}
+            </BurgerIcon>
+
+            <MobileNav $isOpen={isMenuOpen}>
+                <NavLink to="/" onClick={closeMenu}>Главная</NavLink>
+                {user && <NavLink to="/my-account" onClick={closeMenu}>Мой аккаунт</NavLink>}
+                {user && <NavLink to="/my-polls" onClick={closeMenu}>Мои опросы</NavLink>}
+                {user ? (
+                    <NavLink onClick={handleLogout}>Выйти</NavLink>
+                ) : (
+                    <>
+                        <NavLink to="/login" onClick={closeMenu}>Войти</NavLink>
+                        <NavLink to="/register" onClick={closeMenu}>Регистрация</NavLink>
+                    </>
+                )}
+            </MobileNav>
         </HeaderContainer>
     );
 }

@@ -1,6 +1,12 @@
 import React, { useState, useContext } from 'react';
-import styled from 'styled-components';
+import styled, { keyframes } from 'styled-components';
 import { AuthContext } from '../../context/AuthContext/AuthContext';
+import { FaTimes, FaPlus } from 'react-icons/fa';
+
+const fadeIn = keyframes`
+  from { opacity: 0; transform: scale(0.9); }
+  to { opacity: 1; transform: scale(1); }
+`;
 
 const ModalOverlay = styled.div`
   position: fixed;
@@ -17,31 +23,32 @@ const ModalOverlay = styled.div`
 
 const ModalContent = styled.div`
   background: #fff;
-  padding: 1.5rem;
-  border-radius: 8px;
+  padding: 2rem;
+  border-radius: 12px;
   width: 90%;
-  max-width: 400px;
-  max-height: 90vh; 
-  overflow-y: auto; 
+  max-width: 500px;
+  max-height: 90vh;
+  overflow-y: auto;
   box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
   position: relative;
+  animation: ${fadeIn} 0.3s ease-out;
 
   @media (max-width: 480px) {
-    padding: 1rem;
+    padding: 1.5rem;
     width: 95%;
   }
 `;
 
 const CloseButton = styled.button`
   position: absolute;
-  top: 0.5rem;
-  right: 0.5rem;
+  top: 1rem;
+  right: 1rem;
   background: #ff4d4d;
   color: white;
   border: none;
-  border-radius: 10%;
-  width: 30px;
-  height: 30px;
+  border-radius: 6px;
+  width: 32px;
+  height: 32px;
   display: flex;
   align-items: center;
   justify-content: center;
@@ -57,17 +64,17 @@ const CloseButton = styled.button`
 const Form = styled.form`
   display: flex;
   flex-direction: column;
-  gap: 1rem;
+  gap: 1.5rem;
 
   @media (max-width: 480px) {
-    gap: 0.75rem;
+    gap: 1rem;
   }
 `;
 
 const Input = styled.input`
   padding: 0.75rem;
   border: 1px solid #ccc;
-  border-radius: 4px;
+  border-radius: 8px;
   font-size: 1rem;
   transition: border-color 0.2s;
 
@@ -85,9 +92,10 @@ const Input = styled.input`
 const TextArea = styled.textarea`
   padding: 0.75rem;
   border: 1px solid #ccc;
-  border-radius: 4px;
+  border-radius: 8px;
   font-size: 1rem;
   resize: vertical;
+  min-height: 100px;
   transition: border-color 0.2s;
 
   &:focus {
@@ -106,13 +114,15 @@ const Button = styled.button`
   background-color: #3498db;
   color: white;
   border: none;
-  border-radius: 4px;
+  border-radius: 8px;
   font-size: 1rem;
   cursor: pointer;
-  transition: background-color 0.2s;
+  transition: all 0.3s ease;
 
   &:hover {
     background-color: #2980b9;
+    transform: translateY(-1px);
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
   }
 
   @media (max-width: 480px) {
@@ -138,6 +148,9 @@ const RemoveButton = styled.button`
   border-radius: 6px;
   padding: 0.5rem;
   cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
   transition: background-color 0.2s;
 
   &:hover {
@@ -195,8 +208,8 @@ export default function CreatePollModal({ onClose, onSubmit }) {
     };
 
     const addField = () => {
-        if (fields.length >= 15) {
-            setError('Максимальное количество вариантов ответа — 15.');
+        if (fields.length >= 10) {
+            setError('Максимальное количество вариантов ответа — 10.');
             return;
         }
         setFields([...fields, { title: '' }]);
@@ -217,9 +230,10 @@ export default function CreatePollModal({ onClose, onSubmit }) {
     return (
         <ModalOverlay>
             <ModalContent>
-                <CloseButton onClick={onClose}>×</CloseButton>
+                <CloseButton onClick={onClose}>
+                    <FaTimes />
+                </CloseButton>
                 <h2>Создать опрос</h2>
-                <br />
                 <Form onSubmit={handleSubmit}>
                     <Input
                         type="text"
@@ -240,11 +254,15 @@ export default function CreatePollModal({ onClose, onSubmit }) {
                                 value={field.title}
                                 onChange={(e) => updateField(index, e.target.value)}
                             />
-                            <RemoveButton type="button" onClick={() => removeField(index)}>X</RemoveButton>
+                            <RemoveButton type="button" onClick={() => removeField(index)}>
+                                <FaTimes />
+                            </RemoveButton>
                         </FieldContainer>
                     ))}
                     {error && <ErrorMessage>{error}</ErrorMessage>}
-                    <Button type="button" onClick={addField}>Добавить вариант</Button>
+                    <Button type="button" onClick={addField}>
+                        <FaPlus /> Добавить вариант
+                    </Button>
                     <Button type="submit">Создать опрос</Button>
                 </Form>
             </ModalContent>

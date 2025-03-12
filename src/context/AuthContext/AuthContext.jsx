@@ -4,12 +4,14 @@ export const AuthContext = createContext();
 
 export const AuthProvider = ({ children }) => {
     const [user, setUser] = useState(null);
+    const [isLoading, setIsLoading] = useState(true);
 
     useEffect(() => {
         const savedUser = localStorage.getItem('user');
         if (savedUser) {
             setUser(JSON.parse(savedUser));
         }
+        setIsLoading(false);
     }, []);
 
     const login = (userData) => {
@@ -18,12 +20,20 @@ export const AuthProvider = ({ children }) => {
     };
 
     const logout = () => {
-        localStorage.removeItem('user');
-        setUser(null);
+        return new Promise((resolve) => {
+            localStorage.removeItem('user');
+            setUser(null);
+            resolve(); // Гарантируем, что состояние обновилось
+        });
     };
 
     return (
-        <AuthContext.Provider value={{ user, login, logout }}>
+        <AuthContext.Provider value={{ 
+            user,
+            isLoading,
+            login,
+            logout
+        }}>
             {children}
         </AuthContext.Provider>
     );

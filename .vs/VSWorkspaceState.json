@@ -1,0 +1,13 @@
+{
+  "ExpandedNodes": [
+    "",
+    "\\public",
+    "\\src",
+    "\\src\\components",
+    "\\src\\components\\CreatePollModal",
+    "\\src\\components\\MyPolls",
+    "\\src\\components\\PollDetail"
+  ],
+  "SelectedNode": "\\src\\components\\PollDetail\\PollDetail.jsx",
+  "PreviewInSolutionExplorer": true
+}

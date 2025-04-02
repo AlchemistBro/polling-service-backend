@@ -197,7 +197,7 @@ export default function CreatePollModal({ onClose, onSubmit }) {
 
         setError('');
         const poll = {
-            id: Date.now(),
+            id: Math.floor(Date.now() / 1000),
             author: user.username,
             title,
             description,

@@ -1,0 +1,29 @@
+﻿
+
+id          : 0
+author      : Ð¢Ð°Ð¹Ð»ÐµÑ ÐÑÑÐ´ÐµÐ½
+title       : ÐÑÐ±Ð¸ÑÐµ ÐºÐ¾ÑÐ¾Ð²?
+description :  ÐÑÐ±ÐµÑÐ¸ÑÐµ Ð¾Ð´Ð¸Ð½ Ð¸Ð· Ð²Ð°ÑÐ¸Ð°Ð½ÑÐ¾Ð² Ð¸ Ð³Ð¾Ð²Ð¾ÑÐ¸ÑÐµ ÑÐµÑÑÐ½Ð¾!
+               Ð²ÐµÐ´Ñ ÑÑÐ¾ Ð¾ÑÐµÐ½Ñ Ð²Ð°Ð¶Ð½Ð¾...
+fields      : {@{title=ÐÐ°; votes_list_db=System.Object[]}, @{title=ÐÐµÑ; votes_list_db=System.
+              Object[]}, @{title=ÐÐµ Ð·Ð½Ð°Ñ; votes_list_db=System.Object[]}}
+
+id          : 1
+author      : ÐÐ¾ÑÐºÐ° Ñ ÑÑÐµÑÑÐµÐ³Ð¾ ÑÑÐ°Ð¶Ð°
+title       : ÐÐ°ÐºÐ¾Ð¹ Ð²Ð°Ñ Ð»ÑÐ±Ð¸Ð¼ÑÐ¹ ÑÐ²ÐµÑ?
+description : ÐÑ ÑÐ¸Ð¿ Ð±Ð°Ð·Ð° Ð¿ÑÐ¾ÑÑÐ¾ Ð¸Ð½ÑÐµÑÐµÑÐ½Ð¾
+fields      : {@{title=ÐÑÐ°ÑÐ½ÑÐ¹; votes_list_db=System.Object[]}, @{title=Ð¡Ð¸Ð½Ð¸Ð¹; votes_l
+              ist_db=System.Object[]}, @{title=ÐÐµÐ»ÐµÐ½ÑÐ¹; votes_list_db=System.Object[]}, @{t
+              itle=ÐÑÑÐ³Ð¾Ð¹; votes_list_db=System.Object[]}}
+
+id          : 2
+author      : ÐÐ°Ð²ÐµÐ» ÐÑÑÐ¾Ð²
+title       : 2 + 2 = ?
+description : Ð Ð²Ñ, Ð´ÑÑÐ·ÑÑ Ð¼Ð¾Ð¸, ÑÐ¼Ð¾Ð¶ÐµÑÐµ ÑÐµÑÐ¸ÑÑ ÑÑÐ¾Ñ Ð½ÐµÑÐµÐ°Ð»ÑÐ½Ñ
+              Ð¹ Ð¿ÑÐ¸Ð¼ÐµÑ?
+fields      : {@{title=4; votes_list_db=System.Object[]}, @{title=5; votes_list_db=System.Object[]
+              }, @{title=10; votes_list_db=System.Object[]}, @{title=-1; votes_list_db=System.Obje
+              ct[]}...}
+
+
+
